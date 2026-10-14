@@ -74,8 +74,17 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: [build]
+    environment: production
 
     steps:
-      - name: deploying fastapi
-        run: echo "deploying parsas fastapi"
+      - name: deploy to ubuntu server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{secrets.PROD_HOST}}
+          username: ${{secrets.PROD_USERNAME}}
+          password: ${{secrets.PROD_PASSWORD}}
+          script: |
+            cd app/src
+            git pull
+            sudo systemctl restart api
 
