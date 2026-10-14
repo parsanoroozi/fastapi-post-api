@@ -3,7 +3,7 @@ name: Build and Deploy Code
 on: [ push, pull_request ]
 
 jobs:
-  job1:
+  build:
     environment:
       name: testing
     env:
@@ -24,7 +24,7 @@ jobs:
           POSTGRES_DB: ${{secrets.DATABASE_NAME}}_test
         ports:
           - 5432:5432
-        options:
+        options: >-
           --health-cmd pg_isready
           --health-internal 10s
           --health-timeout 5s
