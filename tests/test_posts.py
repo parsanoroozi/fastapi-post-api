@@ -2,7 +2,7 @@ import pytest
 from app import schemas
 
 
-def test_get_all_posts(authorized_client, test_posts):
+def test_get_all_posts(authorized_client, test_user, test_posts):
     res = authorized_client.get("/posts/")
 
     def validate(post):
@@ -10,7 +10,9 @@ def test_get_all_posts(authorized_client, test_posts):
     posts_map = map(validate, res.json())
     posts_list = list(posts_map)
 
-    assert len(res.json()) == len(test_posts)
+    # the endpoint only returns posts owned by the current user
+    user_posts = [post for post in test_posts if post.owner_id == test_user['id']]
+    assert len(posts_list) == len(user_posts)
     assert res.status_code == 200
 
 
