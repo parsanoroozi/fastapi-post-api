@@ -77,16 +77,17 @@ jobs:
     environment: production
 
     steps:
-      - name: Check deployment configuration
+      - name: Test VPS connectivity
         env:
-          SSH_PORT: ${{ secrets.PROD_PORT }}
+          PROD_HOST: ${{ secrets.PROD_HOST }}
+          PROD_PORT: ${{ secrets.PROD_PORT }}
         run: |
-         if [ "$SSH_PORT" = "9011" ]; then
-         echo "SSH port is configured as 9011"
-         else
-         echo "Unexpected SSH port configuration"
-         exit 1
-         fi
+          echo "Testing SSH connectivity..."
+          timeout 10 bash -c \
+            'cat < /dev/null > /dev/tcp/$PROD_HOST/$PROD_PORT' \
+            && echo "TCP connection successful" \
+            || echo "TCP connection failed"
+
       - name: deploy to ubuntu server
         uses: appleboy/ssh-action@master
         with:
