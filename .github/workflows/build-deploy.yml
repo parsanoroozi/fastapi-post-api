@@ -96,7 +96,9 @@ jobs:
           password: ${{secrets.PROD_PASSWORD}}
           port: ${{secrets.PROD_PORT}}
           script: |
-            cd app/src
+            pwd
+            cd app/src/fastapi-post-api
+            pwd
             git pull
             echo ${{secrets.PROD_PASSWORD}} | sudo -S systemctl restart fastapi
 

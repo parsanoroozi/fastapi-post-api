@@ -1,5 +1,4 @@
 import logging
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -30,4 +29,4 @@ app.include_router(vote.router)
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World!, pushing out to ubuntu!"}
+    return {"message": "Hello World!, pushing out to ubuntu"}
